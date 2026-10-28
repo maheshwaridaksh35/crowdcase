@@ -4,6 +4,9 @@ CrowdCase is an interactive mystery for Twitch streams. Viewers send theories an
 
 ## Current prototype
 
+- Live prototype: https://crowd-case-the-chat-is-the-detecti-e9dc35a0.base44.app
+- Overlay preview: https://crowd-case-the-chat-is-the-detecti-e9dc35a0.base44.app/overlay
+
 - Responsive creator dashboard, evidence board, suspects, timeline, chapter and clue controls.
 - Twitch OAuth/EventSub WebSocket connector. The owner manually verified that a real Twitch chat message appeared in CrowdCase.
 - `!theory`, `!vote`, and `!clue` command parsing and local dashboard state.
