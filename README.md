@@ -11,7 +11,7 @@ CrowdCase is an interactive community-mystery concept for Twitch creators. A str
 - Deterministic theory matching using normalized terms and token similarity.
 - Server-side AI analysis path using the Base44 AI gateway, with schema-validated output and source-message references restricted to message IDs supplied by the caller. The Live Case Intelligence panel only sends actual Twitch messages, and it labels the model result separately from a heuristic fallback.
 - A separate /overlay view with evidence, theories, votes and recent chat. The local demo sync works through BroadcastChannel/localStorage between compatible same-origin tabs in the same browser profile.
-- Unit tests for command parsing, theory matching, vote validation, and AI source-reference filtering.
+- Unit tests for command parsing, theory matching, vote validation, EventSub deduplication, and AI source-reference guardrails.
 
 ## Verification status (28 Oct 2026)
 
@@ -20,8 +20,8 @@ CrowdCase is an interactive community-mystery concept for Twitch creators. A str
 - npm run lint: passes.
 - Published / and /overlay routes respond successfully.
 - Real Twitch chat ingestion was manually verified by the project owner.
-- The AI model gateway has successfully returned structured output in a direct smoke test using synthetic test messages. The test is not proof that the dashboard's real-Twitch-message flow was exercised. Collect at least three real Twitch chat messages, open Live Case → Intelligence, and click Analyze chat to verify the full UI path; confirm that it returns AI ANALYSIS rather than a labelled fallback.
-- Production-ready OBS cross-context transport, shared persistent case state, a production OAuth/session design, automated EventSub integration tests, and repository publishing remain incomplete.
+- The AI model gateway returned structured output in a direct smoke test using synthetic test messages, with source IDs. The full dashboard flow with real Twitch messages still needs one manual check.
+- Production-ready OBS cross-context transport, shared persistent case state, a production OAuth/session design, and automated EventSub integration tests remain incomplete. Changes in the branch feat/ai-chat-reliability are prepared for review.
 - Most importantly, this initial version was built in an app-building workspace, not yet substantially built in OpenAI Codex. The contest's Codex/session-ID requirement remains outstanding until actual Codex work is performed and the real /status session ID is saved.
 
 ## Run locally
@@ -80,7 +80,7 @@ The dashboard currently synchronizes the overlay using BroadcastChannel and loca
 3. Verify AI by running Analyze chat against real chat messages and record an honest screen capture of the actual result or fallback.
 4. Implement persistent/shared state and a production-grade transport for the OBS overlay; run an end-to-end test.
 5. Add integration tests for OAuth failure, EventSub subscription, duplicate/reconnect/revocation, voting, message parsing, AI schema/source attribution, and secrets not leaking to client bundles.
-6. Publish the complete source to a public or eligible GitHub/GitLab/Bitbucket repository. This app-builder workspace has not created that repository yet.
+6. Review and merge the branch feat/ai-chat-reliability into main after checks and review.
 7. Record a public YouTube demo under three minutes showing the app genuinely working with Twitch and showing Codex work. Follow DEMO_SCRIPT.md.
 8. Update SUBMISSION_DRAFT.md to reflect only functionality you personally verified, and submit the actual repository URL, demo URL, and real Codex session ID.
 
