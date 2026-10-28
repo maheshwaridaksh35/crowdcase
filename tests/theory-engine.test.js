@@ -96,10 +96,19 @@ test("chat vote validation handles closed polls, missing candidates, duplicates,
   const common = { username: "ViewerOne", theories, votedUsernames: new Set() };
   assert.equal(validateChatVote({ ...common, votingOpen: false, term: "curator" }).status, "closed");
   assert.equal(validateChatVote({ ...common, votingOpen: true, term: "" }).status, "invalid");
+  assert.equal(validateChatVote({ ...common, votingOpen: true, term: "ca" }).status, "invalid");
   assert.equal(validateChatVote({ ...common, votingOpen: true, term: "not-a-theory" }).status, "invalid");
   assert.equal(validateChatVote({ ...common, votingOpen: true, term: "curator", votedUsernames: new Set(["viewerone"]) }).status, "already-voted");
   assert.deepEqual(
     validateChatVote({ ...common, votingOpen: true, term: "curator" }),
     { status: "ok", theoryId: "curator", title: theories[0].title, username: "viewerone" },
+  );
+  const ambiguousTheories = [
+    ...theories,
+    { id: "guard", title: "The guard noticed a key near the case", by: "moss.exe" },
+  ];
+  assert.equal(
+    validateChatVote({ ...common, theories: ambiguousTheories, votingOpen: true, term: "case" }).status,
+    "invalid",
   );
 });
