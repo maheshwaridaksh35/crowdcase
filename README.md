@@ -1,5 +1,7 @@
 # CrowdCase — The chat is the detective
 
+[![CrowdCase CI](https://github.com/maheshwaridaksh35/crowdcase/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/maheshwaridaksh35/crowdcase/actions/workflows/ci.yml)
+
 CrowdCase is an interactive community-mystery concept for Twitch creators. A streamer hosts the fictional mystery **The Midnight Gallery Heist** while viewers submit theories, vote, and inspect clues.
 
 ## Live demo
@@ -13,7 +15,7 @@ CrowdCase is an interactive community-mystery concept for Twitch creators. A str
 - Twitch OAuth/EventSub WebSocket connector for the channel account that authorizes the application.
 - Real Twitch chat messages displayed in Live chat. The owner manually verified a real message appearing in CrowdCase.
 - Chat commands: `!theory`, `!vote`, and `!clue`. Their effects currently update local dashboard state; this is not yet a persistent multiplayer backend.
-- Deterministic theory matching and local vote validation.
+- Deterministic theory matching and local vote validation; short or ambiguous vote names are rejected rather than counting against an arbitrary theory.
 - Server-side AI analysis path through the Base44 AI gateway. A direct smoke test with synthetic messages returned structured output and source-message IDs. The complete dashboard flow using actual Twitch messages still requires a manual check.
 - Separate `/overlay` preview.
 - Nine automated unit tests for command parsing, theory matching, vote validation, EventSub deduplication and AI source-reference guardrails.
@@ -25,6 +27,7 @@ Verified in the maintained app workspace on 28 October 2026:
 - `npm test`: 9 tests passed.
 - `npm run build`: passed.
 - `npm run lint`: passed.
+- [GitHub Actions](https://github.com/maheshwaridaksh35/crowdcase/actions/workflows/ci.yml) reruns tests, build, and lint on pushes and pull requests.
 - `/` and `/overlay` both returned HTTP 200.
 - Real Twitch chat ingestion was manually verified by the project owner.
 - AI analysis succeeded in a direct server smoke test with synthetic input. This does not, by itself, verify the dashboard's live-chat-to-AI workflow.
