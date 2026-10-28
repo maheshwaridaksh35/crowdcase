@@ -1,44 +1,46 @@
 # Codex handoff — CrowdCase
 
-This is a prototype created in an app-building workspace, with a live Twitch EventSub connector verified by its owner. The competition requires substantial development using OpenAI Codex, a working Twitch-connected project, a repository, a public YouTube demo under 3 minutes, and the genuine Codex session ID. This file describes what to do next; it is not evidence that Codex has already built this app.
+This is the engineering handoff for the CrowdCase Twitch mystery prototype. The initial dashboard was created in an app-building workspace; the Codex-specific contest requirement is **not complete** until substantial development is performed in Codex and its genuine session ID is recorded.
 
-## Start here in Codex
+## Start in Codex
 
-1. Import/open this source bundle in Codex.
-2. Read README.md, SUBMISSION_DRAFT.md, src/routes/index.jsx, src/twitchEventSub.js, src/lib/ai-theories.js, src/lib/ai-validation.js, src/lib/theory-engine.js, src/routes/overlay.jsx, and package.json.
-3. Run npm install, npm test, npm run build, and npm run lint.
-4. Have Codex inspect the current code, identify the key security and reliability risks, and make a concise engineering plan before editing.
-5. Perform meaningful code changes in this Codex conversation, run tests, and use /status to save the authentic session ID once most project code has been implemented in that thread.
+1. Open this repository in Codex.
+2. Read `README.md`, `src/routes/index.jsx`, `src/twitchEventSub.js`, `src/lib/ai-theories.js`, `src/lib/ai-validation.js`, `src/lib/theory-engine.js`, `src/lib/vote-engine.js`, `src/lib/message-idempotency.js`, and `tests/theory-engine.test.js`.
+3. Run `npm install && npm test && npm run build && npm run lint`.
+4. Review architecture/security risks, make meaningful code changes, and add integration tests.
+5. Once most substantial project work is in that Codex thread, run `/status` and record the actual session ID.
 
-## Highest-priority technical work
+## Priority engineering work
 
-### 1. Production Twitch auth and event handling
-- Review current Twitch documentation: https://dev.twitch.tv/docs/chat/authenticating/ and https://dev.twitch.tv/docs/chat/send-receive-messages/.
-- The owner manually verified that actual Twitch chat arrived in the app. Re-run the test after importing this source.
-- Replace the prototype implicit-token design with a secure, supported server-managed auth/session flow. Never expose the Twitch Client Secret or private tokens in browser JS, URLs, logs, or repo.
-- Add tested connection failures, subscription revocation, socket migration/reconnect, duplicate event idempotency, and cleanup.
-- Current scope only supports the channel owner authorizing their own channel. Support for other broadcasters needs a broadcaster-approved bot authorization design.
+### Twitch authorization and events
+- The owner manually verified that a real Twitch chat message arrived in CrowdCase.
+- Current connector uses a browser-side prototype implicit-token flow, has no token refresh flow, and only supports authorizing the same channel account. It is not production auth.
+- For production, implement supported server-managed authorization/session handling. Never expose a Twitch Client Secret or token in browser code, URLs, logs, or Git.
+- Add tests for OAuth state mismatch, denial, expiry, identity mismatch, EventSub subscription failure, reconnect/migration, revocation and duplicate event IDs.
 
-### 2. Real shared state and OBS overlay
-- BroadcastChannel and localStorage sync compatible same-origin browser tabs only; they are not sufficient for independent OBS contexts/devices.
-- Implement persistent case state and authenticated/policy-limited shared WebSocket or SSE updates from backend to dashboard and overlay.
-- Test actual !theory, !vote, !clue, one-vote-per-user per round, vote resets, clue reveal idempotency, and chapter state from real chat in OBS.
-- Add reconnect, permission and offline states without silently blending simulation and actual data.
+### Persistent case state and overlay
+- `BroadcastChannel` and `localStorage` only help synchronize compatible same-origin browser tabs; they are not proof of a working OBS Browser Source integration.
+- Implement persistent case state and secure, authenticated WebSocket/SSE updates that reach both dashboard and overlay.
+- Test real `!theory`, `!vote`, and `!clue` commands, one vote per user per round, vote resets, clue idempotency and reconnect behavior.
+- Make demo counts clearly distinct from live measurements.
 
-### 3. AI feature
-- src/lib/ai-theories.js implements a server-side structured analysis call through the Base44 AI gateway.
-- AI input must remain limited to actual Twitch messages, not seeded demo messages. Current UI requires at least 3 real chat messages.
-- The actual model gateway returned structured output in a direct synthetic-message smoke test. The dashboard's real-Twitch-message UI flow is still pending: smoke-test Live Case → Intelligence → Analyze chat. If it fails, keep the heuristic fallback visibly labelled; do not claim the live path worked.
-- Keep viewer messages untrusted. Add prompt-injection tests and source attribution tests. The server now drops invented source IDs and downgrades unsupported accusatory wording to an explicitly unverified hypothesis. Continue testing that model output is never presented as proof of guilt.
-- The basic ****** 5/minute limit needs real shared rate limiting before production.
+### AI case intelligence
+- The server-side AI gateway returned structured output in a direct smoke test using synthetic messages. The full dashboard workflow using actual Twitch messages is still pending.
+- Test **Live Case → Intelligence → Analyze chat** with at least three real messages.
+- Keep viewer messages untrusted; do not follow instructions embedded in chat.
+- Validate all output against supplied message IDs and keep hypotheses distinct from verified case facts.
+- If the model call fails, retain a clearly labelled heuristic fallback rather than implying an AI result was produced.
+- The current in-memory per-runtime rate limit is only a prototype measure.
 
-### 4. Test gates
-- Existing npm test covers command parsing, theory matching, vote validation (closed/invalid/duplicate/valid), EventSub ID idempotency/bounds, source-ID filtering, and guardrails against unsupported accusations.
-- Add integration tests for OAuth state mismatch/denial/expired token, Twitch identity mismatch, chat subscription/reconnect/revocation, duplicate events, one-vote-per-user, command length and rate limiting, AI schema and source attribution, and no client secret/API key in built client assets.
-- npm run build, npm run lint, and npm test must all pass.
+### Test gates
+- Existing automated baseline: 9 unit tests pass; build and lint pass in the maintained workspace.
+- Add integration tests for OAuth, EventSub lifecycle, idempotency, voting concurrency, AI schema/source attribution and absence of secrets from browser assets.
+- Keep `npm test`, `npm run build`, and `npm run lint` green.
 
-### 5. Required submission artifacts
-- Publish the complete source, tests, README, .env.example, and setup instructions to a real GitHub/GitLab/Bitbucket repository. No repository has been created yet.
-- Record the real Codex session ID with /status in the thread where most of the substantial project code was produced.
-- Record a public YouTube demo under 3 minutes showing actual Twitch behavior and genuine Codex build footage. See DEMO_SCRIPT.md.
-- Only then finalize the Devpost copy. Do not claim AI, Twitch, Codex, analytics, OBS support, or session IDs beyond the verified evidence.
+## Submission gates
+
+1. Publish the complete, runnable source and setup instructions.
+2. Verify the live Twitch-to-AI dashboard workflow and real overlay transport.
+3. Perform meaningful implementation in Codex, then use `/status` to record the genuine session ID.
+4. Record a public YouTube demonstration shorter than three minutes showing actual Twitch behavior and Codex development. See `DEMO_SCRIPT.md`.
+5. Keep the Devpost description honest and aligned with verified behavior. Never fabricate AI results, Codex use, session IDs or working integrations.
