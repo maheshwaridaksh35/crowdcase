@@ -2,33 +2,17 @@ const unsupportedAccusation = /\b(guilty|primary suspect|definitely stole|stole|
 
 export function guardLeadingTheory(leadingTheory, sourceMessageIds) {
   const text = String(leadingTheory ?? "").trim().slice(0, 220);
-  if (!text || !sourceMessageIds?.length) {
-    return "There is not enough source-grounded chat signal to select a leading theory yet.";
-  }
-  if (unsupportedAccusation.test(text)) {
-    return "Chat is discussing an unverified hypothesis about possible suspect involvement. Review the cited messages and counterargument.";
-  }
-  if (/^(chat is considering|the strongest chat hypothesis is|there is not enough reliable signal)/i.test(text)) {
-    return text;
-  }
+  if (!text || !sourceMessageIds?.length) return "There is not enough source-grounded chat signal to select a leading theory yet.";
+  if (unsupportedAccusation.test(text)) return "Chat is discussing an unverified hypothesis about possible suspect involvement. Review the cited messages and counterargument.";
+  if (/^(chat is considering|the strongest chat hypothesis is|there is not enough reliable signal)/i.test(text)) return text;
   return "Unverified chat hypothesis: " + text;
 }
-
 export function retainKnownSourceReferences(result, allowedIds) {
   const allowed = allowedIds instanceof Set ? allowedIds : new Set(allowedIds ?? []);
-  const evidence = (result.evidence ?? [])
-    .map((item) => ({
-      ...item,
-      sourceMessageIds: (item.sourceMessageIds ?? []).filter((id) => allowed.has(id)),
-    }))
-    .filter((item) => item.sourceMessageIds.length > 0);
-  const theoryGroups = (result.theoryGroups ?? [])
-    .map((item) => ({
-      ...item,
-      sourceMessageIds: (item.sourceMessageIds ?? []).filter((id) => allowed.has(id)),
-    }))
-    .filter((item) => item.sourceMessageIds.length > 0);
-  const leadingTheorySourceMessageIds = (result.leadingTheorySourceMessageIds ?? [])
-    .filter((id) => allowed.has(id));
-  return { evidence, theoryGroups, leadingTheorySourceMessageIds };
+  const filterItems = (items) => (items ?? []).map(item => ({...item,sourceMessageIds:(item.sourceMessageIds ?? []).filter(id=>allowed.has(id))})).filter(item=>item.sourceMessageIds.length>0);
+  return {
+    evidence:filterItems(result.evidence),
+    theoryGroups:filterItems(result.theoryGroups),
+    leadingTheorySourceMessageIds:(result.leadingTheorySourceMessageIds ?? []).filter(id=>allowed.has(id)),
+  };
 }
