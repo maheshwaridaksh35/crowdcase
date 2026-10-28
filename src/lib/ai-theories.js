@@ -17,6 +17,7 @@ const outputSchema = z.object({
   summary: z.string().min(1).max(600),
   leadingTheory: z.string().min(1).max(220),
   leadingTheorySourceMessageIds: z.array(z.string().max(120)).min(1).max(12),
+  leadingTheorySourceMessageIds: z.array(z.string().max(120)).min(1).max(12),
   evidence: z.array(z.object({
     claim: z.string().min(1).max(280),
     sourceMessageIds: z.array(z.string().max(120)).max(12),
