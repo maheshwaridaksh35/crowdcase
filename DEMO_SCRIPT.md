@@ -1,32 +1,48 @@
-# CrowdCase — demo video plan (under 3 minutes)
+# CrowdCase — video script (target 2:40; must be under 3:00)
 
-Record the final video only after the real Twitch and AI checks below have been completed. Do not present sample counts as live analytics or a fallback as AI output.
+**Recording rules:** Use the real Twitch channel and current app. Show the cursor/interaction, not just static screenshots. Keep the video public on YouTube. Never show access tokens, OAuth URLs containing tokens, Client Secrets, passwords, or API keys.
 
 ## 0:00–0:15 — Hook
-Show CrowdCase and say: “Livestream chat moves fast. CrowdCase turns viewers into a team solving a mystery.”
+**Show:** CrowdCase dashboard, then the title “The Midnight Gallery Heist.”
+
+**Read:** “What if Twitch chat wasn't just watching the stream, but solving the mystery together? This is CrowdCase: The Chat Is the Detective.”
 
 ## 0:15–0:35 — The case
-Show The Midnight Gallery Heist, its evidence board, suspects and timeline. Introduce the 47-second blackout.
+**Show:** Evidence board, suspects, the stopped clock clue and the 47-second blackout timeline.
 
-## 0:35–1:00 — Real Twitch chat
-Show the actual Twitch channel and send a real `!theory` message. Show that same message arriving in CrowdCase Live chat.
+**Read:** “A priceless clockwork bird disappeared during a blackout. Viewers inspect clues, compare suspects, and build a theory together while the streamer controls how the story unfolds.”
 
-## 1:00–1:25 — AI case intelligence
-Collect at least three real chat messages. Open Live Case → Intelligence and click **Analyze chat**. Show the actual `AI ANALYSIS` result only if the app reports it. If it shows **HEURISTIC FALLBACK**, say that the model call was unavailable.
+## 0:35–1:00 — Real Twitch connection
+**Show:** The actual Twitch channel and CrowdCase Settings showing a connected state. Send a real `!theory` message in chat, then show that message arriving in CrowdCase Live chat.
 
-## 1:25–1:50 — Community interaction
-Cast a valid `!vote` while voting is open, then reveal a clue. Distinguish a Twitch message arriving from a case-state change being shared across viewers.
+**Read:** “CrowdCase connects to Twitch through OAuth and EventSub. Here I'm sending a real chat theory, and you can see the same message arrive in the investigation dashboard.”
 
-## 1:50–2:15 — Overlay and Codex
-Show OBS only if the overlay has been connected and tested in OBS Browser Source. Show Codex making a meaningful code change, then running tests/build.
+## 1:00–1:30 — AI Case Intelligence
+**Show:** Three or more real Twitch messages, then **Live Case → Intelligence → Analyze chat**. Keep the result visible long enough to see source-message names and counterpoint.
 
-## 2:15–2:45 — Close
-Show the live application and public repository. End with: “CrowdCase makes the chat part of the story.”
+**Read if the UI displays AI ANALYSIS:** “The AI analysis summarizes the leading community hypothesis, groups related ideas, cites the chat messages behind its conclusions, and includes a counterpoint. It's a way to understand chat, not a verdict on a suspect.”
 
-## Recording checklist
-- Public YouTube link, under 3 minutes.
-- Genuine Twitch interaction shown.
-- AI narration matches the result actually returned.
-- Actual Codex development footage shown.
-- No passwords, access tokens, Client Secrets or API keys visible.
-- All repository/app links work and every claim is demonstrable.
+**Read instead if the UI displays HEURISTIC FALLBACK:** “In this run the model service was unavailable, so CrowdCase clearly labels a heuristic fallback built from viewer-submitted theories. It does not pretend that fallback is an AI response.”
+
+## 1:30–1:55 — Community gameplay
+**Show:** Start a vote, enter a valid `!vote curator` (or the exact unique theory term) in the Twitch chat, show the dashboard count change, then reveal the next clue.
+
+**Read:** “Viewers can vote while a round is open, and the app rejects duplicate or ambiguous chat votes rather than silently assigning them to the wrong theory. The streamer can reveal the next clue to move the mystery forward.”
+
+## 1:55–2:20 — Codex and engineering
+**Show:** The actual Codex build thread with a meaningful code change, then GitHub Actions passing tests, build and lint. Do not show only a blank Codex window or merely the repository page.
+
+**Read:** “I used Codex to iterate on the implementation and debug the project. The repository includes automated checks for chat commands, theory matching, vote validation, source attribution and duplicate-event handling.”
+
+Only keep the last sentence if it accurately describes the work performed in your Codex thread.
+
+## 2:20–2:40 — Close
+**Show:** Return to dashboard and briefly show the repository URL.
+
+**Read:** “CrowdCase turns a stream into a shared investigation: chat doesn't just react to the story — it helps move it forward.”
+
+## Before publishing
+- Verify the video runs under 3:00 after editing.
+- Keep only the AI narration matching the actual result shown.
+- Show actual Codex development and use the genuine session ID from `/status`.
+- Upload to YouTube and set visibility to Public.
