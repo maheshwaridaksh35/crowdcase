@@ -1,0 +1,20 @@
+.demo-dot.connected{background:#71e1c5;box-shadow:0 0 8px #71e1c580}
+.twitch-client-input{height:36px;width:100%;border:1px solid #343547;background:#0e0f17;color:#e9e6f7;border-radius:7px;padding:0 10px;font-size:11px;margin:0 0 14px;min-width:0}
+.twitch-client-input::placeholder{color:#72738a}
+.twitch-connect-card{padding:14px;margin:0 0 14px;background:#151620;border-color:#323345}
+.twitch-connect-card .input-with-prefix{margin-bottom:14px}
+.redirect-row{display:grid;grid-template-columns:1fr auto;gap:7px 10px;align-items:center;border:1px solid #343345;background:#11121b;border-radius:7px;padding:9px;margin-bottom:12px}
+.redirect-row>span{font-size:9px;color:#9a99af}
+.redirect-row code{grid-column:1/-1;overflow-wrap:anywhere;font:9px 'DM Mono',monospace;color:#c3b4ff;line-height:1.5}
+.redirect-row .text-action{grid-column:2;grid-row:1;justify-self:end}
+.twitch-status-row{display:flex;gap:9px;align-items:flex-start;border:1px solid #33303e;background:#191923;padding:10px;border-radius:7px;margin-bottom:10px}
+.twitch-status-row>div{flex:1;min-width:0}
+.twitch-status-row strong{display:block;font-size:10px;color:#dedbef;line-height:1.5;overflow-wrap:anywhere}
+.twitch-status-row p{font-size:9px;color:#9493a9;line-height:1.5;margin:4px 0 0;overflow-wrap:anywhere}
+.status-dot.status-connected{background:#74dcc3}
+.twitch-actions{display:flex;justify-content:flex-end;gap:7px;margin:10px 0}
+.twitch-error{background:#321f29;border:1px solid #633543;color:#ffbac3;border-radius:7px;padding:9px;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+.status-mark.status-online{background:#1f3932;border:1px solid #355c50;color:#88e2c8}
+.settings-help{font-size:9px;color:#85869b;line-height:1.6;margin:11px 0 0;overflow-wrap:anywhere}
+.settings-help code{font:9px 'DM Mono',monospace;color:#c1b1ff;overflow-wrap:anywhere}
+.connection-note{line-height:1.55}
