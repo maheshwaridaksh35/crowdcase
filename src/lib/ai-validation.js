@@ -32,3 +32,16 @@ export function retainKnownSourceReferences(result, allowedIds) {
     .filter((id) => allowed.has(id));
   return { evidence, theoryGroups, leadingTheorySourceMessageIds };
 }
+
+export function retainKnownSourceReferences(result, allowedIds) {
+  const allowed = allowedIds instanceof Set ? allowedIds : new Set(allowedIds ?? []);
+  const evidence = (result.evidence ?? [])
+    .map((item) => ({ ...item, sourceMessageIds: (item.sourceMessageIds ?? []).filter((id) => allowed.has(id)) }))
+    .filter((item) => item.sourceMessageIds.length > 0);
+  const theoryGroups = (result.theoryGroups ?? [])
+    .map((item) => ({ ...item, sourceMessageIds: (item.sourceMessageIds ?? []).filter((id) => allowed.has(id)) }))
+    .filter((item) => item.sourceMessageIds.length > 0);
+  const leadingTheorySourceMessageIds = (result.leadingTheorySourceMessageIds ?? [])
+    .filter((id) => allowed.has(id));
+  return { evidence, theoryGroups, leadingTheorySourceMessageIds };
+}
