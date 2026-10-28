@@ -31,15 +31,24 @@ Verified in the maintained app workspace on 28 October 2026:
 
 ## Run locally
 
-Use Node.js LTS:
+Use Node.js 22 or a compatible current LTS release.
 
-```bash
-npm install
-npm run dev
-npm test
-npm run build
-npm run lint
-```
+1. Install dependencies:
+   ```bash
+   npm ci
+   ```
+2. Copy `.env.example` to `.env.local`.
+3. In `.env.local`, set `VITE_BASE44_APP_ID` and `VITE_BASE44_APP_BASE_URL` to the values for your own Base44 app. The app ID and base URL are not secrets; do not put private tokens in any `VITE_*` variable.
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+5. Verify the source:
+   ```bash
+   npm test
+   npm run build
+   npm run lint
+   ```
 
 Routes:
 - `/` — creator dashboard
