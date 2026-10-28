@@ -1,12 +1,11 @@
-// Server-only model adapter for CrowdCase AI analysis.
-// API credentials are deliberately provided by the host's Base44 server context;
-// no private model key is shipped in the browser bundle.
-export function gatewayModel(base44, modelName = "automatic") {
-  const candidate = base44?.ai?.models?.[modelName]
-    || base44?.ai?.models?.automatic
-    || base44?.ai?.model;
-  if (!candidate) {
-    throw new Error("The configured Base44 AI model gateway is unavailable in this deployment. Keep the labelled heuristic fallback visible.");
-  }
-  return candidate;
-}
+import { openaiCompatibleText } from "@tanstack/ai-openai/compatible";
+
+// A TanStack AI chat adapter on the Base44 AI gateway: OpenAI-compatible, no API
+// key, billed to the app's AI credits. Pass `context.getBase44()`. The gateway is
+// called as the app (service role) because an owner can restrict it to server-side
+// calls, which refuses a visitor's token, so authenticate the caller first.
+// "automatic" lets the platform pick the model; named models cost more credits.
+export const gatewayModel = (base44, model = "automatic") => {
+  const { baseURL, token, headers } = base44.asServiceRole.aiGateway.connection();
+  return openaiCompatibleText(model, { name: "base44", baseURL, apiKey: token, defaultHeaders: headers });
+};
