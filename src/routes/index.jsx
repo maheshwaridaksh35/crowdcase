@@ -5,6 +5,7 @@ import { analyzeChatTheories } from "../lib/ai-theories";
 import { findSimilarTheory, parseChatCommand } from "../lib/theory-engine";
 import { validateChatVote } from "../lib/vote-engine";
 import { rememberEventId } from "../lib/message-idempotency";
+import { guardLeadingTheory } from "../lib/ai-validation.js";
 import "./twitch-connect.css";
 import "./ai-analysis.css";
 import { Activity, AlertCircle, ArrowDownRight, ArrowUpRight, AudioLines, BarChart3, Bell, BookOpen, BrainCircuit, Check, ChevronDown, ChevronRight, CircleHelp, Clock3, Copy, Crown, Eye, Fingerprint, Lightbulb, Link2, LockKeyhole, MessageCircle, MessageSquare, MousePointer2, Play, Plus, Radio, RefreshCw, Send, Settings2, Shield, Sparkles, Target, Vote, X } from "lucide-react";
@@ -409,7 +410,7 @@ function LiveCaseView(p) {
         mode: "heuristic",
         analyzedMessageCount: actualChatMessages.length,
         summary: "The AI service was unavailable, so this is a transparent heuristic fallback. It surfaces viewer-submitted theories without inferring guilt or inventing evidence.",
-        leadingTheory: theoriesFromChat[0]?.title || "No !theory submission has arrived yet.",
+        leadingTheory: guardLeadingTheory(theoriesFromChat[0]?.title || "No !theory submission has arrived yet.", theoriesFromChat[0]?.sourceMessageIds || []),
         leadingTheorySourceMessageIds: theoriesFromChat[0]?.sourceMessageIds || [],
         evidence: recent.map((m) => ({ claim: "@" + m.name + " wrote: " + m.text, sourceMessageIds: [String(m.id)] })),
         counterargument: "This fallback does not judge whether any theory is true. Chat messages are hypotheses, not verified case evidence.",
